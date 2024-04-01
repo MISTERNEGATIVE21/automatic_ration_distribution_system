@@ -1,12 +1,10 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
 import BeatLoader from "react-spinners/BeatLoader"
 
 
-const CredentailsFormDetails = ({ accountCredentials, setAccountCredentials, handleSubmit, loader }) => {
-
-  const getRFID = () => {
-
-  }
+const CredentailsFormDetails = ({ accountCredentials, setAccountCredentials, handleSubmit, loader, getRFID }) => {
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,8 +62,8 @@ const CredentailsFormDetails = ({ accountCredentials, setAccountCredentials, han
             placeholder="Click below to get your RFID."
           />
         </div>
-        <div class="">
-          <button class="bg-gray-200 text-gray-500 font-normal py-2 px-4 rounded" onClick={getRFID} >
+        <div class="" onClick={getRFID}>
+          <button class="bg-gray-200 text-gray-500 font-normal py-2 px-4 rounded" >
             Get Your RFID
           </button>
         </div>

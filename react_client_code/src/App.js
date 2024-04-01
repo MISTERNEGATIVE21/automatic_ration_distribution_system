@@ -7,6 +7,8 @@ import MemberRegistration from "./pages/MemberRegistration";
 import FamilyMembersDetails from "./pages/FamilyMembersDetails";
 import CredentialFormPage from "./pages/CredentialFormPage";
 import Dashboard from "./pages/Dashboard";
+import FamilyDetailsPage from "./pages/FamilyDetailsPage";
+import PersonalDetailsPage from "./pages/PersonalDetailsPage";
 
 const App = () => {
   return (
@@ -28,6 +30,8 @@ const App = () => {
           element={<CredentialFormPage />}
         />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/personal-details" element={<PersonalDetailsPage />} />
+        <Route path="/family-details" element={<FamilyDetailsPage />} />
       </Routes>
     </BrowserRouter>
   );

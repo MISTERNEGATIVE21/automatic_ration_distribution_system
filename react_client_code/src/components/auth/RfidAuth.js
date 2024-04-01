@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const RfidAuth = ({ setScanRfid, setSigninSuccess }) => {
+  const navigate = useNavigate();
   const handleRfid = () => {
     setSigninSuccess(false);
     setScanRfid(true);
+    navigate("/dashboard")
   };
   return (
     <div className="flex items-center justify-center w-full">

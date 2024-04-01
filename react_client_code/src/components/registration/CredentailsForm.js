@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
-import CredentailsFormDetails from './CredentailsFormDetails'
-import { RationContext } from '../../context/RationContext'
-import { ToastContainer, toast } from 'react-toastify';
-import axios from "axios"
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import CredentailsFormDetails from "./CredentailsFormDetails";
+import { RationContext } from "../../context/RationContext";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CredentailsForm = () => {
   const navigate = useNavigate();
@@ -13,19 +13,30 @@ const CredentailsForm = () => {
     password: "",
     confirmPassword: "",
     RFID: "",
-  },)
+  });
 
   const { personalDetails, familyMembersDetails } = useContext(RationContext);
 
+  const getRFID = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/api/get-rfid");
+      setAccountCredentials((prev) => ({
+        ...prev,
+        RFID: data,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async () => {
     setLoader(true);
     try {
       const config = {
         headers: {
-          'Content-type': 'application/json',
-        }
-      }
+          "Content-type": "application/json",
+        },
+      };
 
       const reqData = {
         full_name: personalDetails.full_name,
@@ -33,17 +44,30 @@ const CredentailsForm = () => {
         phone: personalDetails.phone,
         dob: personalDetails.dob,
         gender: personalDetails.gender,
-        address: personalDetails.address + ", " + personalDetails.city + ", " + personalDetails.zipcode + ", " + personalDetails.state + ", " + personalDetails.country,
+        address:
+          personalDetails.address +
+          ", " +
+          personalDetails.city +
+          ", " +
+          personalDetails.zipcode +
+          ", " +
+          personalDetails.state +
+          ", " +
+          personalDetails.country,
         username: accountCredentials.username,
         confirmPassword: accountCredentials.confirmPassword,
         password: accountCredentials.password,
         aadhaar: personalDetails.aadhaar,
         RFID_UID: accountCredentials.RFID,
-        familyMembers: familyMembersDetails
-      }
+        familyMembers: familyMembersDetails,
+      };
 
-      const { data } = await axios.post(`http://127.0.0.1:5000/api/register`, reqData, config);
-      setLoader(false)
+      const { data } = await axios.post(
+        `http://127.0.0.1:5000/api/register`,
+        reqData,
+        config
+      );
+      setLoader(false);
       console.log(data);
       toast.success(data.message, {
         position: "top-right",
@@ -57,11 +81,10 @@ const CredentailsForm = () => {
       });
 
       setTimeout(() => {
-        navigate("/login")
+        navigate("/login");
       }, 2000);
-
     } catch (error) {
-      setLoader(false)
+      setLoader(false);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 3000,
@@ -73,7 +96,7 @@ const CredentailsForm = () => {
         theme: "light",
       });
     }
-  }
+  };
 
   return (
     <>
@@ -90,12 +113,18 @@ const CredentailsForm = () => {
           </div>
 
           <div class="lg:col-span-2">
-            <CredentailsFormDetails handleSubmit={handleSubmit} accountCredentials={accountCredentials} setAccountCredentials={setAccountCredentials} loader={loader} />
+            <CredentailsFormDetails
+              handleSubmit={handleSubmit}
+              accountCredentials={accountCredentials}
+              setAccountCredentials={setAccountCredentials}
+              loader={loader}
+              getRFID={getRFID}
+            />
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CredentailsForm
+export default CredentailsForm;

@@ -1,7 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { RationContext } from "../../context/RationContext";
 
 const Navbar = () => {
+  const { loggedInDetails } = useContext(RationContext)
+  const location = useLocation();
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("ration_jwt_auth");
+    navigate("/")
+  }
   return (
     <div class="hidden md:flex md:w-64 md:flex-col">
       <div class="flex flex-col flex-grow pt-5 overflow-y-auto bg-white justify-between  h-screen">
@@ -24,9 +32,11 @@ const Navbar = () => {
           <div class="flex flex-col flex-1 px-3 mt-6">
             <div class="space-y-4">
               <nav>
-                <a
-                  href="#"
-                  class="flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 text-white rounded-lg bg-green-700 group"
+                <Link
+                  to="/dashboard"
+                  className={`flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                    location.pathname === "/dashboard" ? "bg-green-700 text-white rounded-md" : "text-gray-900 hover:text-gray-900 rounded-lg hover:bg-green-50"
+                  }`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +44,7 @@ const Navbar = () => {
                     viewBox="0 0 24 24"
                     stroke-width="2"
                     stroke="currentColor"
-                    class="flex-shrink-0 w-5 h-5 mr-4 text-white"
+                    class="flex-shrink-0 w-5 h-5 mr-4"
                   >
                     <path
                       stroke-linecap="round"
@@ -42,12 +52,14 @@ const Navbar = () => {
                       d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
                     />
                   </svg>
-                  Information
-                </a>
+                  Dashboard
+                </Link>
 
-                <a
-                  href="#"
-                  class="flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 text-gray-900 hover:text-gray-900 rounded-lg hover:bg-green-50 group"
+                <Link
+                  to="/personal-details"
+                  className={`flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                    location.pathname === "/personal-details" ? "bg-green-700 text-white rounded-md" : "text-gray-900 hover:text-gray-900 rounded-lg hover:bg-green-50"
+                  }`}
                 >
                   <svg
                     class="flex-shrink-0 w-5 h-5 mr-4"
@@ -64,11 +76,13 @@ const Navbar = () => {
                     />
                   </svg>
                   Personal Details
-                </a>
+                </Link>
 
-                <a
-                  href="#"
-                  class="flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 text-gray-900 hover:text-gray-900 rounded-lg hover:bg-green-50 group"
+                <Link
+                  to="/family-details"
+                  className={`flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                    location.pathname === "/family-details" ? "bg-green-700 text-white rounded-md" : "text-gray-900 hover:text-gray-900 rounded-lg hover:bg-green-50"
+                  }`}
                 >
                   <svg
                     class="flex-shrink-0 w-5 h-5 mr-4"
@@ -85,7 +99,7 @@ const Navbar = () => {
                     />
                   </svg>
                   Family Details
-                </a>
+                </Link>
               </nav>
             </div>
           </div>
@@ -94,6 +108,7 @@ const Navbar = () => {
           <Link
             to="/"
             class="flex items-center px-4 py-2.5 text-sm font-medium transition-all duration-200 text-gray-900 hover:text-gray-900 rounded-lg hover:bg-green-50 group"
+            onClick={logout}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +135,7 @@ const Navbar = () => {
               src="https://landingfoliocom.imgix.net/store/collection/clarity-dashboard/images/vertical-menu/2/avatar-male.png"
               alt=""
             />
-            Jacob Jones
+            {loggedInDetails ? loggedInDetails?.full_name : "John Doe"}
           </button>
         </div>
       </div>
