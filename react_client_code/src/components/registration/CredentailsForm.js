@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 const CredentailsForm = () => {
   const navigate = useNavigate();
   const [loader, setLoader] = useState(false);
+  const [timer, setTimer] = useState(15); // Timer initialized to 10 seconds
+  const [isScanning, setIsScanning] = useState(false);
   const [accountCredentials, setAccountCredentials] = useState({
     username: "",
     password: "",
@@ -19,13 +21,53 @@ const CredentailsForm = () => {
 
   const getRFID = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/get-rfid");
+      setIsScanning(true);
+      const { data } = await axios.get("http://localhost:5000/api/scan"); 
+
+      // Start the countdown
+      let countdown = 15;
+      const interval = setInterval(() => {
+        countdown--;
+        setTimer(countdown);
+        if (countdown === 0) {
+          clearInterval(interval);
+          // Call /scanOutput after 10 seconds
+          callScanOutput();
+          setIsScanning(false)
+        }
+      }, 1000);
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const callScanOutput = async () => {
+    try {
+      const { data} = await axios.get("http://localhost:5000/api/scan-output");
       setAccountCredentials((prev) => ({
         ...prev,
         RFID: data,
       }));
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -119,6 +161,8 @@ const CredentailsForm = () => {
               setAccountCredentials={setAccountCredentials}
               loader={loader}
               getRFID={getRFID}
+              timer={timer}
+              isScanning={isScanning}
             />
           </div>
         </div>

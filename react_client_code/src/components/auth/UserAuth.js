@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { RationContext } from "../../context/RationContext";
 
 const UserAuth = ({ next, setSigninSuccess }) => {
-  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setLoggedInDetails } = useContext(RationContext);
@@ -17,7 +16,6 @@ const UserAuth = ({ next, setSigninSuccess }) => {
         username,
         password,
       });
-      console.log(data);
       setSigninSuccess(true);
       setLoggedInDetails(data.user_data)
       localStorage.setItem("ration_jwt_auth", JSON.stringify(data.access_token));
@@ -35,6 +33,13 @@ const UserAuth = ({ next, setSigninSuccess }) => {
       });
     }
   };
+
+  const handleDummy = (e) => {
+    e.preventDefault();
+    setUsername("alicesmith123");
+    setPassword("amrit123");
+  }
+
   return (
     <>
       <ToastContainer />
@@ -81,13 +86,22 @@ const UserAuth = ({ next, setSigninSuccess }) => {
                   required=""
                 />
               </div>
-              <button
+              <div className="flex flex-col gap-2">
+                <button
                 type="submit"
                 class="w-full text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 onClick={handleSignin}
               >
                 Sign in
               </button>
+              <button
+                type="submit"
+                class="w-full text-white bg-indigo-500 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                onClick={handleDummy}
+              >
+                Get Dummy Credentials
+              </button>
+              </div>
               <p class="text-sm font-light text-gray-900 ">
                 Don’t have an account yet?{" "}
                 <Link

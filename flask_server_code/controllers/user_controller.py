@@ -1,6 +1,6 @@
 # controllers.py
 from flask import jsonify, request, session, Blueprint
-from config import db
+from flask_server_code.config import db
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
@@ -115,18 +115,13 @@ def getFamilyMembers():
     return jsonify({'success': True, 'family_members': family_members}), 201
 
 
-@user_blueprint.route('/api/send-data', methods=['POST'])
+@user_blueprint.route('/api/scan', methods=['GET'])
 # @jwt_required()
-def sendData():
-    data = request.json
-    print(data)
+def scanRfid():
 
-    # Store the data in the server session
-    session['stored_data'] = data
+    return "Scanning..."
 
-    return "Success"
-
-@user_blueprint.route('/api/get-rfid', methods=['GET'])
+@user_blueprint.route('/api/scan-output', methods=['GET'])
 def getRFID():
 
     # get rfid from esp32

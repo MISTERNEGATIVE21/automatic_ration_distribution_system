@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { RationContext } from "../../context/RationContext";
 
 const RfidAuth = ({ setScanRfid, setSigninSuccess }) => {
+  const { loggedInDetails } = useContext(RationContext)
+  console.log(loggedInDetails);
   const navigate = useNavigate();
   const handleRfid = () => {
-    setSigninSuccess(false);
-    setScanRfid(true);
+
+    // 1. Scan RFID
+    // 2. const data = Get RFID
+    // 3. Match with RFID from DB (loggedInDetails.rfid === data)
+    // if matched then retdirect to /dashboard otherwise thorw error authentication failed 
+
     navigate("/dashboard")
   };
   return (

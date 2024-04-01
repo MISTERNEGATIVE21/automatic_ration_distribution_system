@@ -1,15 +1,20 @@
-import axios from 'axios'
-import React, { useState } from 'react'
-import BeatLoader from "react-spinners/BeatLoader"
+import axios from "axios";
+import React, { useState } from "react";
+import BeatLoader from "react-spinners/BeatLoader";
 
-
-const CredentailsFormDetails = ({ accountCredentials, setAccountCredentials, handleSubmit, loader, getRFID }) => {
-  
-
+const CredentailsFormDetails = ({
+  accountCredentials,
+  setAccountCredentials,
+  handleSubmit,
+  loader,
+  getRFID,
+  timer,
+  isScanning
+}) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAccountCredentials(prevState => ({ ...prevState, [name]: value }));
-  }
+    setAccountCredentials((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   return (
     <div>
@@ -23,7 +28,6 @@ const CredentailsFormDetails = ({ accountCredentials, setAccountCredentials, han
             value={accountCredentials.username}
             onChange={handleChange}
             class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-
           />
         </div>
         <div class="md:col-span-5">
@@ -62,10 +66,15 @@ const CredentailsFormDetails = ({ accountCredentials, setAccountCredentials, han
             placeholder="Click below to get your RFID."
           />
         </div>
-        <div class="" onClick={getRFID}>
-          <button class="bg-gray-200 text-gray-500 font-normal py-2 px-4 rounded" >
+        <div className="flex flex-col gap-2" onClick={getRFID}>
+          <button class="bg-gray-200 text-gray-500 font-normal py-2 px-4 rounded">
             Get Your RFID
           </button>
+          {isScanning && (
+            <button class="bg-gray-200 font-medium text-gray-500 py-2 px-4 rounded">
+              Scan Within : {timer}s
+            </button>
+          )}
         </div>
       </div>
 
@@ -73,14 +82,13 @@ const CredentailsFormDetails = ({ accountCredentials, setAccountCredentials, han
         <div class="inline-flex items-end">
           <a>
             <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              {loader ? (<BeatLoader color="#ffff"
-                size={10} />) : "Submit"}
+              {loader ? <BeatLoader color="#ffff" size={10} /> : "Submit"}
             </button>
           </a>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CredentailsFormDetails
+export default CredentailsFormDetails;

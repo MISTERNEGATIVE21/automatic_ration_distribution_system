@@ -1,7 +1,7 @@
 # db.py
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
-from config import app_config
+from flask_server_code.config import app_config
 
 # Creating a MongoDB client
 client = MongoClient(app_config.Config.MONGO_URI)
